@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/footer";
 import { ScrollProgressBar } from "@/components/layout/scroll-progress-bar";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { CursorSpotlight } from "@/components/layout/cursor-spotlight";
+import { Analytics } from "@vercel/analytics/next";
 
 const fontSans = Instrument_Sans({
   subsets: ["latin"],
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <BackToTop />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
