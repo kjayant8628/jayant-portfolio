@@ -32,8 +32,10 @@ const OUTPUT = { x: 1360, y: 300, w: 180, h: 72 };
 const ROW = { top: 120, mid: 300, bottom: 480 };
 
 export function MultiAgentArchitecture() {
-  const a = (b:any,s:"left"|"right"|"top"|"bottom") =>
-    anchor(b.x,b.y,b.w,b.h,s);
+  const a = (
+    b: { x: number; y: number; w: number; h: number },
+    s: "left" | "right" | "top" | "bottom"
+  ) => anchor(b.x, b.y, b.w, b.h, s);
 
   return (
     <ArchitectureDiagram
