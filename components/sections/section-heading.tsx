@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/animations/reveal";
 
 interface SectionHeadingProps {
   eyebrow: string;
@@ -19,11 +19,10 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5 }}
+    <Reveal
+      offset={14}
+      margin="-80px"
+      duration={0.5}
       className={cn(
         "max-w-2xl",
         align === "center" && "mx-auto text-center",
@@ -36,6 +35,6 @@ export function SectionHeading({
       </span>
       <h2 className="mt-3 text-balance text-display-md font-semibold text-foreground">{title}</h2>
       {description && <p className="mt-4 text-base leading-relaxed text-muted">{description}</p>}
-    </motion.div>
+    </Reveal>
   );
 }
