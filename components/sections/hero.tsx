@@ -8,6 +8,7 @@ import { NodeNetwork } from "@/components/layout/node-network";
 import { InferenceTicker } from "@/components/sections/inference-ticker";
 import { siteConfig } from "@/lib/config";
 import Image from "next/image";
+import { Stagger, StaggerItem } from "@/components/animations/reveal";
 
 const SPECIALTIES = [
   "LLM Applications",
@@ -17,16 +18,6 @@ const SPECIALTIES = [
   "FastAPI",
   "Backend Systems",
 ];
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
-};
 
 const headline = siteConfig.tagline
   .replace(".", "")
@@ -51,17 +42,14 @@ export function Hero() {
       <NodeNetwork className="absolute inset-0 h-full w-full opacity-70" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
+      <Stagger
         className="container relative grid gap-14 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10"
       >
         <div>
-          <motion.div variants={item} className="mb-6 flex items-center gap-2 font-mono text-xs text-muted-foreground">
+          <StaggerItem className="mb-6 flex items-center gap-2 font-mono text-xs text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-signal" />
             <span className="tracking-wide">{"// "}{siteConfig.role.toUpperCase()} — {siteConfig.location.toUpperCase()}</span>
-          </motion.div>
+          </StaggerItem>
 
           <motion.h1
             whileHover={{ scale: 1.01 }}
@@ -107,22 +95,24 @@ export function Hero() {
             ))}
           </motion.h1>
 
-          <motion.p variants={item} className="mt-7 max-w-xl text-lg leading-relaxed text-muted">
+          <StaggerItem className="mt-7 max-w-xl text-lg leading-relaxed text-muted">
             {siteConfig.role} specializing in
-          </motion.p>
+          </StaggerItem>
 
-          <motion.ul variants={item} className="mt-4 flex flex-wrap gap-2">
-            {SPECIALTIES.map((s) => (
-              <li
-                key={s}
-                className="rounded-full border border-border bg-surface/60 px-3.5 py-1.5 text-sm text-foreground/80"
-              >
-                {s}
-              </li>
-            ))}
-          </motion.ul>
+          <StaggerItem>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {SPECIALTIES.map((s) => (
+                <li
+                  key={s}
+                  className="rounded-full border border-border bg-surface/60 px-3.5 py-1.5 text-sm text-foreground/80"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </StaggerItem>
 
-          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-3">
+          <StaggerItem className="mt-10 flex flex-wrap items-center gap-3">
             <Button size="lg" asChild>
               <Link href="#projects">
                 View projects
@@ -145,11 +135,10 @@ export function Hero() {
                 <Linkedin className="h-[18px] w-[18px]" />
               </Link>
             </Button>
-          </motion.div>
+          </StaggerItem>
         </div>
 
-        <motion.div
-          variants={item}
+        <StaggerItem
           className="relative flex h-[420px] items-center justify-center lg:justify-end"
         >
           {/* Orange glow */}
@@ -185,8 +174,8 @@ export function Hero() {
           <div className="absolute right-0 bottom-0">
             <InferenceTicker />
           </div>
-        </motion.div>
-        </motion.div>   
+        </StaggerItem>
+      </Stagger>
 
       <motion.div
         initial={{ opacity: 0 }}
