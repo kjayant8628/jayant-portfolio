@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, FileDown, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NodeNetwork } from "@/components/layout/node-network";
@@ -33,6 +33,8 @@ const headline = siteConfig.tagline
   }, []);
 
 export function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section
       id="hero"
@@ -52,18 +54,22 @@ export function Hero() {
           </StaggerItem>
 
           <motion.h1
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.25 }}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.01 }}
+            transition={prefersReducedMotion ? undefined : { duration: 0.25 }}
             className="text-display-xl font-semibold leading-[0.86] tracking-[-0.045em] text-foreground"
           >
             {headline.map((line, index) => (
               <motion.div
                 key={line}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                    : { opacity: 0, y: 36, filter: "blur(10px)" }
+                }
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{
-                  duration: 0.7,
-                  delay: index * 0.18,
+                  duration: prefersReducedMotion ? 0 : 0.82,
+                  delay: prefersReducedMotion ? 0 : 0.14 + index * 0.14,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
@@ -71,18 +77,26 @@ export function Hero() {
                   <>
                     <motion.span
                       className="text-signal inline-block"
-                      animate={{
-                        filter: [
-                          "brightness(1)",
-                          "brightness(1.25)",
-                          "brightness(1)",
-                        ],
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
+                      animate={
+                        prefersReducedMotion
+                          ? undefined
+                          : {
+                              filter: [
+                                "brightness(1)",
+                                "brightness(1.25)",
+                                "brightness(1)",
+                              ],
+                            }
+                      }
+                      transition={
+                        prefersReducedMotion
+                          ? undefined
+                          : {
+                              duration: 5,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }
+                      }
                     >
                       AI
                     </motion.span>{" "}
