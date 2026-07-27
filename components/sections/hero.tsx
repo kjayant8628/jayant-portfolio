@@ -9,6 +9,7 @@ import { InferenceTicker } from "@/components/sections/inference-ticker";
 import { siteConfig } from "@/lib/config";
 import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/animations/reveal";
+import { useHoverCapable } from "@/hooks/use-hover-capable";
 
 const SPECIALTIES = [
   "LLM Applications",
@@ -34,6 +35,8 @@ const headline = siteConfig.tagline
 
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
+  const hoverCapable = useHoverCapable();
+  const shouldAnimateChipHover = hoverCapable && !prefersReducedMotion;
 
   return (
     <section
@@ -114,16 +117,52 @@ export function Hero() {
           </StaggerItem>
 
           <StaggerItem>
-            <ul className="mt-4 flex flex-wrap gap-2">
+            <motion.ul
+              className="mt-4 flex flex-wrap gap-2"
+              initial={prefersReducedMotion ? undefined : "hidden"}
+              animate="show"
+              variants={{
+                hidden: {},
+                show: {
+                  transition: {
+                    staggerChildren: 0.07,
+                    delayChildren: 0.12,
+                  },
+                },
+              }}
+            >
               {SPECIALTIES.map((s) => (
-                <li
+                <motion.li
                   key={s}
                   className="rounded-full border border-border bg-surface/60 px-3.5 py-1.5 text-sm text-foreground/80"
+                  variants={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          hidden: { opacity: 0, y: 8 },
+                          show: { opacity: 1, y: 0 },
+                        }
+                  }
+                  whileHover={
+                    shouldAnimateChipHover
+                      ? {
+                          y: -2,
+                          scale: 1.05,
+                          boxShadow: "0 10px 18px rgba(15, 23, 42, 0.16)",
+                          backgroundColor: "hsl(var(--surface-hover) / 0.95)",
+                        }
+                      : undefined
+                  }
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
+                  }
                 >
                   {s}
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </StaggerItem>
 
           <StaggerItem className="mt-10 flex flex-wrap items-center gap-3">
